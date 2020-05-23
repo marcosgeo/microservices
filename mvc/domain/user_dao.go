@@ -19,7 +19,7 @@ func GetUser(userID int64) (*User, *utils.ApplicationError) {
 		return user, nil
 	}
 	return nil, &utils.ApplicationError{
-		Message:    fmt.Sprintf("User %v was not found", userID),
+		Message:    fmt.Sprintf("User with id %v doesn't exists", userID),
 		StatusCode: http.StatusNotFound,
 		Code:       "not_found",
 	}
