@@ -2,16 +2,23 @@ package app
 
 import (
 	"log"
-	"net/http"
 
-	"github.com/marcosgeo/microservices/mvc/controllers"
+	"github.com/gin-gonic/gin"
 )
+
+var (
+	router *gin.Engine
+)
+
+func init() {
+	router = gin.Default()
+}
 
 // StartApp ...
 func StartApp() {
-	http.HandleFunc("/users", controllers.GetUser)
+	mapUrls()
 
-	if err := http.ListenAndServe(":8000", nil); err != nil {
+	if err := router.Run(":8080"); err != nil {
 		log.Fatal(err)
 	}
 

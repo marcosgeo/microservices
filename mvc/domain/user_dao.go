@@ -18,6 +18,10 @@ var (
 	UserDao userDaoInterface
 )
 
+func init() {
+	UserDao = &userDao{}
+}
+
 // This is an interface, which facilitates mock implementations on tests cases
 type userDaoInterface interface {
 	GetUser(int64) (*User, *utils.ApplicationError)
