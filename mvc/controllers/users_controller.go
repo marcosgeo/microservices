@@ -1,38 +1,32 @@
 package controllers
 
 import (
-	"encoding/json"
 	"net/http"
 	"strconv"
 
+	"github.com/gin-gonic/gin"
 	"github.com/marcosgeo/microservices/mvc/services"
 	"github.com/marcosgeo/microservices/mvc/utils"
 )
 
 // GetUser ...
-func GetUser(resp http.ResponseWriter, req *http.Request) {
-	userID, err := strconv.ParseInt(req.URL.Query().Get("user_id"), 10, 64)
+func GetUser(c *gin.Context) {
+	userID, err := strconv.ParseInt(c.Param("user_id"), 10, 64)
 	if err != nil {
-		appErr := &utils.ApplicationError{
+		apiErr := &utils.ApplicationError{
 			Message:    "user_id must be a number",
 			StatusCode: http.StatusBadRequest,
 			Code:       "bad_request",
 		}
-
-		jsonValue, _ := json.Marshal(appErr)
-		resp.WriteHeader(appErr.StatusCode)
-		resp.Write(jsonValue)
+		c.JSON(apiErr.StatusCode, apiErr)
 		return
 	}
 
-	user, appErr := services.UsersService.GetUser(userID)
-	if err != nil {
-		jsonValue, _ := json.Marshal(appErr)
-		resp.WriteHeader(appErr.StatusCode)
-		resp.Write([]byte(jsonValue))
+	user, apiErr := services.UsersService.GetUser(userID)
+	if apiErr != nil {
+		c.JSON(apiErr.StatusCode, apiErr)
 		return
 	}
 
-	jsonValue, _ := json.Marshal(user)
-	resp.Write(jsonValue)
+	c.JSON(http.StatusOK, user)
 }
