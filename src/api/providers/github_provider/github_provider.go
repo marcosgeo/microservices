@@ -21,15 +21,13 @@ func getAuthorizationHeader(accessToken string) string {
 	return fmt.Sprintf(headerAuthorizationFormat, accessToken)
 }
 
-// CreateRepo creates a github repository
+// CreateRepo creates a github repository and returns a JSON Response object
 func CreateRepo(accessToken string, request github.CreateRepoRequest) (*github.CreateRepoResponse, *github.GithubErrorResponse) {
 	// Autorization: token 98asçldkj9321u4lçkasdjtoqwe4
 	headers := http.Header{}
 	headers.Set(headerAuthorization, getAuthorizationHeader(accessToken))
 
 	response, err := restclient.Post(urlCreateRepo, request, headers)
-	fmt.Println(response)
-	fmt.Println(err)
 	if err != nil {
 		log.Println(fmt.Sprintf("Error when trying to create new repo in ginhub: %s", err.Error()))
 		return nil, &github.GithubErrorResponse{
@@ -62,10 +60,10 @@ func CreateRepo(accessToken string, request github.CreateRepoRequest) (*github.C
 
 	var result github.CreateRepoResponse
 	if err := json.Unmarshal(bytes, &result); err != nil {
-		log.Println(fmt.Sprintf("Error when trying to unmarshal create respo ssuccessful response: %s", err.Error()))
+		log.Println(fmt.Sprintf("Error when trying to unmarshal create repo successful response: %s", err.Error()))
 		return nil, &github.GithubErrorResponse{
 			StatusCode: http.StatusInternalServerError,
-			Message:    "Error when trying to unmarshal github.CreateRespoResponse",
+			Message:    "Error when trying to unmarshal github.CreateRepoResponse",
 		}
 	}
 	return &result, nil
