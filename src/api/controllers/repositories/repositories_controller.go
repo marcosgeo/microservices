@@ -3,7 +3,7 @@ package repositories
 import (
 	"net/http"
 
-	"github.com/gin-conic/gin"
+	"github.com/gin-gonic/gin"
 	"github.com/marcosgeo/microservices/src/api/domain/repositories"
 	"github.com/marcosgeo/microservices/src/api/services"
 	"github.com/marcosgeo/microservices/src/api/utils/errors"
