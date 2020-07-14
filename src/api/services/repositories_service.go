@@ -66,7 +66,7 @@ func (s *repoService) CreateRepos(requests []repositories.CreateRepoRequest) (re
 		go s.createRepoConcurrent(current, input)
 	}
 
-	wg.Wait() // waits until all requests are processed
+	wg.Wait() // wait group, waits until all requests are processed
 	close(input)
 
 	result := <-output
